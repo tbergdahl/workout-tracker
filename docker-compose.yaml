@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  backend:
+    # path to image
+    build: ./back
+
+    # map local ports to container ports
+    ports:
+      - "5000:5000"
+
+    volumes:
+       # mounts local code into container so a rebuild isn't needed everytime
+      - ./back:/app
+
+    environment:
+    # enviornment variables
+      - NODE_ENV=development
+
+  frontend:
+    # path to image
+    build: ./front
+
+    # map local ports to container ports
+    ports:
+      - "3000:3000"
+    volumes:
+        # mounts local code into container so a rebuild isn't needed everytime
+      - ./front:/app
+       - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
+    # make sure backend starts first
+    depends_on:
+      - backend
